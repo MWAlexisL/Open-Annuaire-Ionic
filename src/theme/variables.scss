@@ -71,7 +71,7 @@ $colors: (
 // default are overridden.
 
 @import "ionic.theme.default";
-
+@import "../components/filter/filter";
 
 // Ionicons
 // --------------------------------------------------
@@ -86,3 +86,7 @@ $colors: (
 
 @import "roboto";
 @import "noto-sans";
+
+page-detail-company {
+  margin-top: 50px;
+}
