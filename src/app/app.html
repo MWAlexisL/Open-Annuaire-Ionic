@@ -1,1 +1,15 @@
-<ion-nav [root]="rootPage"></ion-nav>
+<ion-header>
+  <ion-navbar>
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+      <img src="../assets/imgs/open-annuaire.png">
+  </ion-navbar>
+</ion-header>
+<ion-menu [content]="contentApp">
+  <ion-content>
+    <filter></filter>
+  </ion-content>
+</ion-menu>
+
+<ion-nav #contentApp [root]="rootPage"></ion-nav>
