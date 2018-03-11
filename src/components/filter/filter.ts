@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Constants, Filter, Filters} from '../../model/Filter';
 import {FirmApiProvider} from '../../providers/firm-api/firm-api';
 import {SendUrlService} from '../../providers/send-url';
+import {LoadingController} from 'ionic-angular';
 
 /**
  * Generated class for the FilterComponent component.
@@ -23,7 +24,7 @@ export class FilterComponent{
   effectifs = this.constants.effectifs;
   params= '';
 
-  constructor(private firmApiService: FirmApiProvider, private sendUrlService: SendUrlService) {
+  constructor(private firmApiService: FirmApiProvider, private sendUrlService: SendUrlService, private loadingCtrl: LoadingController) {
   }
 
   addFilter(filter, value, dateBefore?) {
@@ -41,8 +42,15 @@ export class FilterComponent{
       } else {
         param = filter + ':' + value;
       }
+      let loading = this.loadingCtrl.create({
+        content: 'Chargement en cours...'
+      });
+
+      loading.present();
+
       this.firmApiService.searchCompanies(param, 0).subscribe(data => {
         newFilter.nhits = data.nhits;
+        loading.dismiss();
       });
       this.filters[filter].filter.push(newFilter);
 
@@ -66,6 +74,14 @@ export class FilterComponent{
     if (this.filters[filter].filter.length === 0) {
       delete this.filters[filter].filter;
     }
+    let loading = this.loadingCtrl.create({
+      content: 'Chargement en cours...'
+    });
+
+    loading.present();
+    this.firmApiService.searchCompanies(this.params, 0).subscribe(data => {
+      loading.dismiss();
+    });
 
     this.params = this.sendUrlService.getUrlParameters(this.filters);
     this.sendUrlService.sendUrl(this.params);

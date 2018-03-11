@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NavController} from 'ionic-angular';
+import {LoadingController, NavController} from 'ionic-angular';
 import {DetailCompanyPage} from '../detail-company/detail-company';
 import {FirmApiProvider} from '../../providers/firm-api/firm-api';
 import {CompanyInterface} from '../../providers/firm-api/firm-api-interface';
@@ -16,12 +16,19 @@ export class HomePage {
   nhits: number;
   params = '';
 
-  constructor(public navCtrl: NavController, public firmApiProvider: FirmApiProvider, private sendUrlService: SendUrlService) {
+  constructor(public navCtrl: NavController, public firmApiProvider: FirmApiProvider, private sendUrlService: SendUrlService, private loadingCtrl: LoadingController) {
+    let loading = this.loadingCtrl.create({
+      content: 'Chargement en cours...'
+    });
+
+    loading.present();
+
     this.firmApiProvider.searchCompanies(this.params, 30).subscribe(data => {
       this.nhits = data.nhits;
       for (let i = 0; i < data.records.length; i++) {
         this.items.push(data.records[i]);
       }
+      loading.dismiss();
     });
     this.subscription = this.sendUrlService.getUrl().subscribe(url => {
       this.items = [];

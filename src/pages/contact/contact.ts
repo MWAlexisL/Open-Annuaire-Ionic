@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {Transfer, TransferObject} from '@ionic-native/transfer';
 import {File} from '@ionic-native/file';
-import {AlertController, NavParams, Platform} from 'ionic-angular';
+import {AlertController, LoadingController, NavParams, Platform} from 'ionic-angular';
 import {SendUrlService} from '../../providers/send-url';
 import {FirmApiProvider} from '../../providers/firm-api/firm-api';
 
@@ -17,7 +17,7 @@ export class ContactPage {
   params = '';
   nhits: number;
 
-  constructor(private transfert: Transfer, private platfrom: Platform, private alertCtrl: AlertController, private sendUrlService: SendUrlService, private firmApiProvider: FirmApiProvider) {
+  constructor(private transfert: Transfer, private platfrom: Platform, private alertCtrl: AlertController, private sendUrlService: SendUrlService, private firmApiProvider: FirmApiProvider, private loadingCtrl: LoadingController) {
     this.sendUrlService.getUrl().subscribe(params => {
       this.params = params;
       this.firmApiProvider.searchCompanies(this.params, 0).subscribe(data => {
@@ -35,6 +35,12 @@ export class ContactPage {
   }
 
   export(format: string, allData?: boolean) {
+    let loading = this.loadingCtrl.create({
+      content: 'Téléchargement en cours...'
+    });
+
+    loading.present();
+
     const fileTransfert: TransferObject = this.transfert.create();
     const url = 'https://public.opendatasoft.com/explore/dataset/sirene/download/?format=' + ((format == 'json') ? format : format + '&use_labels_for_header=true') + ((allData) ? '' : '&q=' + this.params);
 
@@ -45,6 +51,7 @@ export class ContactPage {
         buttons: ['Ok']
       });
 
+      loading.dismiss();
       alertSuccess.present();
 
     }, (error) => {
@@ -54,7 +61,7 @@ export class ContactPage {
         subTitle: `Erreur lors du téléchargement. Error code: ${error.code}`,
         buttons: ['Ok']
       });
-
+      loading.dismiss();
       alertFailure.present();
 
     });
