@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {NavController} from 'ionic-angular';
 import {Subscription} from 'rxjs/Subscription';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {SendUrlService} from '../../providers/send-url';
