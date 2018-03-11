@@ -7,12 +7,32 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>detail-company</ion-title>
+    <ion-title>{{item.fields.siret }} | {{item.fields.l1_declaree}}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-{{item.fields.apet700}}
+<ion-item>
+  Activité : {{item.fields.apet700}}
+</ion-item>
+  <ion-item>
+    Adresse : {{ item.fields.l4_normalisee ? item.fields.l4_normalisee + ',': '' }}
+    {{ item.fields.codpos }} {{ item.fields.libcom }}
+  </ion-item>
+  <ion-item>
+    Date de création : {{item.fields.dcren | date:'dd/MM/yyyy' }}
+  </ion-item>
+  <ion-item>
+    Statut juridique : {{item.fields.libnj }}
+  </ion-item>
+  <ion-item>
+    Chiffre d'affaire : {{item.fields.libtca }}
+  </ion-item>
+  <ion-item>
+    Effectifs : {{item.fields.libtefet }}
+  </ion-item>
+
+    <iframe frameborder="0" width="100%" height="50%" [src]="mapUrl"></iframe>
 </ion-content>

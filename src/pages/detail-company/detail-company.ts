@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams, Platform} from 'ionic-angular';
 import {CompanyInterface} from '../../providers/firm-api/firm-api-interface';
+import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 
 /**
  * Generated class for the DetailCompanyPage page.
@@ -15,10 +16,13 @@ import {CompanyInterface} from '../../providers/firm-api/firm-api-interface';
   templateUrl: 'detail-company.html',
 })
 export class DetailCompanyPage {
-item: CompanyInterface;
-  constructor(public navCtrl: NavController, public navParams: NavParams, platform: Platform) {
+  item: CompanyInterface;
+  mapUrl: SafeResourceUrl;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, platform: Platform, private sanitizer: DomSanitizer) {
     this.item = navParams.get('item');
-    console.log(this.item);
+    this.mapUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+      'https://public.opendatasoft.com/explore/embed/dataset/sirene/map/?q=siret:' + this.item.fields.siret);
   }
 
 

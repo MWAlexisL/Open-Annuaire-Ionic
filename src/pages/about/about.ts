@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import {Component} from '@angular/core';
+import {NavController} from 'ionic-angular';
+import {Subscription} from 'rxjs/Subscription';
+import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import {SendUrlService} from '../../providers/send-url';
 
 @Component({
   selector: 'page-about',
@@ -7,8 +10,14 @@ import { NavController } from 'ionic-angular';
 })
 export class AboutPage {
 
-  constructor(public navCtrl: NavController) {
+  subscription: Subscription;
+  mapUrl: SafeResourceUrl;
 
+  constructor(private sendUrlService: SendUrlService, private sanitizer: DomSanitizer) {
+    this.subscription = this.sendUrlService.getUrl().subscribe(data => {
+      this.mapUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+        'https://public.opendatasoft.com/explore/embed/dataset/sirene/map/?q=' + data);
+    });
   }
 
 }

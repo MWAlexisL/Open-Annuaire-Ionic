@@ -1,7 +1,9 @@
 import {Component} from '@angular/core';
 import {Transfer, TransferObject} from '@ionic-native/transfer';
 import {File} from '@ionic-native/file';
-import {AlertController, Platform} from 'ionic-angular';
+import {AlertController, NavParams, Platform} from 'ionic-angular';
+import {SendUrlService} from '../../providers/send-url';
+import {FirmApiProvider} from '../../providers/firm-api/firm-api';
 
 declare var cordova: any;
 
@@ -11,11 +13,19 @@ declare var cordova: any;
   providers: [Transfer, TransferObject, File]
 })
 export class ContactPage {
-
-  gay = ['uuu', 'xD'];
   storageDirectory: string = '';
+  params = '';
+  nhits: number;
 
-  constructor(private transfert: Transfer, private platfrom: Platform, private alertCtrl: AlertController, private file: File) {
+  constructor(private transfert: Transfer, private platfrom: Platform, private alertCtrl: AlertController, private sendUrlService: SendUrlService, private firmApiProvider: FirmApiProvider) {
+    this.sendUrlService.getUrl().subscribe(params => {
+      this.params = params;
+      this.firmApiProvider.searchCompanies(this.params, 0).subscribe(data => {
+        this.nhits = data.nhits;
+
+        console.log(this.nhits);
+      });
+    });
     if (this.platfrom.is('ios')) {
       this.storageDirectory = cordova.file.documentsDirectory
     }
@@ -24,14 +34,14 @@ export class ContactPage {
     }
   }
 
-  xD() {
-    const fileTransfert: TransferObject =  this.transfert.create();
-    const imageLocation = 'https://hypixel.net/proxy/aHR0cHM6Ly9pLmltZ3VyLmNvbS9JWGZYUmZxLmpwZw%3D%3D/image.pngg';
+  export(format: string, allData?: boolean) {
+    const fileTransfert: TransferObject = this.transfert.create();
+    const url = 'https://public.opendatasoft.com/explore/dataset/sirene/download/?format=' + ((format == 'json') ? format : format + '&use_labels_for_header=true') + ((allData) ? '' : '&q=' + this.params);
 
-    fileTransfert.download(imageLocation, this.storageDirectory + 'image-download-test.png').then((entry) => {
+    fileTransfert.download(url, this.storageDirectory + 'image-download-test.png').then((entry) => {
       const alertSuccess = this.alertCtrl.create({
         title: `Download Succeeded!`,
-        subTitle: `L'image à bien été téléchargée dans le path : ${entry.toURL()}`,
+        subTitle: `Le fichier .${format} à bien été téléchargé dans le path : ${entry.toURL()}`,
         buttons: ['Ok']
       });
 
@@ -41,36 +51,12 @@ export class ContactPage {
 
       const alertFailure = this.alertCtrl.create({
         title: `Download Failed!`,
-        subTitle: `was not successfully downloaded. Error code: ${error.code}`,
+        subTitle: `Erreur lors du téléchargement. Error code: ${error.code}`,
         buttons: ['Ok']
       });
 
       alertFailure.present();
 
-    });
-  }
-
-  json() {
-    this.file.checkFile(this.storageDirectory, 'xD.json')
-      .then(doesExist => {
-        console.log("doesExist : " + doesExist);
-        return this.writeToAccessLogFile();
-      }).catch(err => {
-      return this.file.createFile(this.storageDirectory, 'xD.json', false)
-        .then(FileEntry => this.writeToAccessLogFile())
-        .catch(err => console.log('Couldn'));
-    });
-  }
-
-  writeToAccessLogFile() {
-    this.file.writeExistingFile(this.storageDirectory, 'xD.json', JSON.stringify(this.gay)).then((success) => {
-      const alertSuccess = this.alertCtrl.create({
-        title: `Download Succeeded!`,
-        subTitle: `le fichier JSON à bien été téléchargé dans le path : ${success}`,
-        buttons: ['Ok']
-      });
-
-      alertSuccess.present();
     });
   }
 }

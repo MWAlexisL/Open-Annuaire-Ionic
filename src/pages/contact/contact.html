@@ -1,19 +1,36 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      Contact
+      Export
     </ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
-  <button ion-button (click)="xD()"> xD</button>
-  <button ion-button (click)="json()"> json</button>
-  <ion-list>
-    <ion-list-header>Follow us on Twitter</ion-list-header>
-    <ion-item>
-      <ion-icon name="ionic" item-start ></ion-icon>
-      @ionicframework
-    </ion-item>
-  </ion-list>
+  <ion-item>
+    <ion-title text-center>CSV</ion-title>
+    <button ion-button [full]="true" [default]="true" (click)="export('csv', true)">Jeu de données entier</button>
+    <button ion-button [full]=" true" [default]="true"
+            (click)="export('csv')">Seulement les {{( nhits > 10000) ? '10 000 premiers' :
+      nhits | number:'':'fr'}} enregistrements sélectionnés
+    </button>
+  </ion-item>
+  <ion-item>
+    <ion-title text-center>JSON</ion-title>
+    <button ion-button [full]="true" [default]="true" (click)="export('json', true)">Jeu de données entier</button>
+    <button ion-button [full]="true" [default]="true"
+            (click)="export('json')">Seulement les {{(nhits > 10000) ? '10 000 premiers' : nhits
+      | number:'':'fr'}} enregistrements sélectionnés
+    </button>
+  </ion-item>
+
+  <ion-item>
+    <ion-title text-center>JSON</ion-title>
+
+    <button ion-button [full]="true" [default]="true" (click)="export('xls', true)">Jeu de données entier</button>
+    <button ion-button [full]="true" [default]="true"
+            (click)="export('xls')">Seulement les {{(nhits > 10000) ? '10 000 premiers' : nhits |
+      number:'':'fr'}} enregistrements sélectionnés
+    </button>
+  </ion-item>
 </ion-content>

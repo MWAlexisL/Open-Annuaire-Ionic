@@ -1,35 +1,104 @@
 <!--  ACTIVITE -->
 <ion-item>
   <ion-label color="primary" stacked>Activité (code APE)</ion-label>
-  <ion-input placeholder="Ajouter une activité"></ion-input>
+  <ion-input #apeCodeInput placeholder="Ajouter une activité"
+             (keyup.enter)="addFilter('apet700', apeCodeInput.value); apeCodeInput.value = ''"></ion-input>
+</ion-item>
+
+<ion-list *ngIf="filters.apet700.filter">
+  <ion-item *ngFor="let leFilter of filters.apet700.filter; let i = index">
+    <button ion-button [round]="true" icon-start (click)="removeFilter('apet700', i)">
+      <ion-icon name="close"></ion-icon>
+    </button>
+    {{leFilter.data}}
+    <ion-badge item-end>{{leFilter.nhits | number:'':'fr'}}</ion-badge>
+  </ion-item>
+</ion-list>
+
+
+<!-- CATEGORIE -->
+
+<ion-item>
+  <ion-label>Toppings</ion-label>
+  <ion-select multiple="true">
+    <ion-option>Bacon</ion-option>
+    <ion-option>Black Olives</ion-option>
+    <ion-option>Extra Cheese</ion-option>
+    <ion-option>Mushrooms</ion-option>
+    <ion-option>Pepperoni</ion-option>
+    <ion-option>Sausage</ion-option>
+  </ion-select>
 </ion-item>
 
 <!--  DEPARTEMENT -->
 <ion-item>
   <ion-label color="primary" stacked>Département</ion-label>
-  <ion-input placeholder="Ajouter un département"></ion-input>
+  <ion-input #depetInput placeholder="Ajouter un département"
+             (keyup.enter)="addFilter('depet', depetInput.value); depetInput.value = ''"></ion-input>
 </ion-item>
+
+<ion-list *ngIf="filters.depet.filter">
+  <ion-item *ngFor="let leFilter of filters.depet.filter; let i = index">
+    <button ion-button [round]="true" icon-start (click)="removeFilter('depet', i)">
+      <ion-icon name="close"></ion-icon>
+    </button>
+    {{leFilter.data}}
+    <ion-badge item-end>{{leFilter.nhits | number:'':'fr'}}</ion-badge>
+  </ion-item>
+</ion-list>
 
 
 <!--  COMMUNE -->
 <ion-item>
   <ion-label color="primary" stacked>Commune (Code postal)</ion-label>
-  <ion-input placeholder="Ajouter une commune"></ion-input>
+  <ion-input #codposInput placeholder="Ajouter une commune"
+             (keyup.enter)="addFilter('codpos', codposInput.value); codposInput.value = ''"></ion-input>
 </ion-item>
+
+<ion-list *ngIf="filters.codpos.filter">
+  <ion-item *ngFor="let leFilter of filters.codpos.filter; let i = index">
+    <button ion-button [round]="true" icon-start (click)="removeFilter('codpos', i)">
+      <ion-icon name="close"></ion-icon>
+    </button>
+    {{leFilter.data}}
+    <ion-badge item-end>{{leFilter.nhits | number:'':'fr'}}</ion-badge>
+  </ion-item>
+</ion-list>
 
 
 <!--  STATUT JURIDIQUE -->
 <ion-item>
   <ion-label color="primary" stacked>Statut juridique</ion-label>
-  <ion-input  placeholder="Ajouter un statut juridique"></ion-input>
+  <ion-input #statutInput placeholder="Ajouter un statut"
+             (keyup.enter)="addFilter('libnj', statutInput.value); statutInput.value = ''"></ion-input>
 </ion-item>
 
+<ion-list *ngIf="filters.libnj.filter">
+  <ion-item *ngFor="let leFilter of filters.libnj.filter; let i = index">
+    <button ion-button [round]="true" icon-start (click)="removeFilter('libnj', i)">
+      <ion-icon name="close"></ion-icon>
+    </button>
+    {{leFilter.data}}
+    <ion-badge item-end>{{leFilter.nhits | number:'':'fr'}}</ion-badge>
+  </ion-item>
+</ion-list>
 
 <!--  REGION -->
 <ion-item>
   <ion-label color="primary" stacked>Région</ion-label>
-  <ion-input placeholder="Ajouter une région"></ion-input>
+  <ion-input #tefetInput placeholder="Ajouter une région"
+             (keyup.enter)="addFilter('tefet', tefetInput.value); tefetInput.value = ''"></ion-input>
 </ion-item>
+
+<ion-list *ngIf="filters.tefet.filter">
+  <ion-item *ngFor="let leFilter of filters.tefet.filter; let i = index">
+    <button ion-button [round]="true" icon-start (click)="removeFilter('tefet', i)">
+      <ion-icon name="close"></ion-icon>
+    </button>
+    {{leFilter.data}}
+    <ion-badge item-end>{{leFilter.nhits | number:'':'fr'}}</ion-badge>
+  </ion-item>
+</ion-list>
 
 
 
