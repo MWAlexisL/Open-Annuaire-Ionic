@@ -4,10 +4,10 @@ import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {SendUrlService} from '../../providers/send-url';
 
 @Component({
-  selector: 'page-about',
-  templateUrl: 'about.html'
+  selector: 'page-map',
+  templateUrl: 'map.html'
 })
-export class AboutPage {
+export class MapPage {
 
   subscription: Subscription;
   mapUrl: SafeResourceUrl;

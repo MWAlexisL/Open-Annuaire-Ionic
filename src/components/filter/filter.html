@@ -19,16 +19,18 @@
 <!-- CATEGORIE -->
 
 <ion-item>
-  <ion-label>Toppings</ion-label>
-  <ion-select multiple="true">
-    <ion-option>Bacon</ion-option>
-    <ion-option>Black Olives</ion-option>
-    <ion-option>Extra Cheese</ion-option>
-    <ion-option>Mushrooms</ion-option>
-    <ion-option>Pepperoni</ion-option>
-    <ion-option>Sausage</ion-option>
+  <ion-label>Catégorie d'entreprise</ion-label>
+  <ion-select #selectCategory multiple="true" (ionChange)="changeSelect('categorie', selectCategory.value)">
+    <ion-option *ngFor="let category of categories;" [value]="category.value" >{{category.libelle}}</ion-option>
   </ion-select>
 </ion-item>
+<ion-list *ngIf="filters.categorie.filter">
+  <ion-item *ngFor="let leFilter of filters.categorie.filter;">
+    {{findEffectif('categorie',leFilter.data)}}
+    <ion-badge item-end>{{leFilter.nhits | number:'':'fr'}}</ion-badge>
+  </ion-item>
+</ion-list>
+
 
 <!--  DEPARTEMENT -->
 <ion-item>
@@ -83,16 +85,52 @@
   </ion-item>
 </ion-list>
 
+<!-- EFFECTIF -->
+
+<ion-item>
+  <ion-label>Effectifs</ion-label>
+  <ion-select #selectEffectf multiple="true" (ionChange)="changeSelect('tefet', selectEffectf.value)">
+    <ion-option *ngFor="let choice of tefets;"
+                [value]="choice.value">{{choice.libelle}}
+    </ion-option>
+  </ion-select>
+</ion-item>
+<ion-list *ngIf="filters.tefet.filter">
+  <ion-item *ngFor="let leFilter of filters.tefet.filter; let i = index">
+    {{findEffectif('tefet',leFilter.data)}}
+    <ion-badge item-end>{{leFilter.nhits | number:'':'fr'}}</ion-badge>
+  </ion-item>
+</ion-list>
+
+
+<!-- CHIFFRE D'AFFAIRE -->
+
+<ion-item>
+  <ion-label>Chiffre d'affaires</ion-label>
+  <ion-select #selectTca multiple="true" (ionChange)="changeSelect('tca', selectTca.value)">
+    <ion-option *ngFor="let choice of tcas; let i = index"
+                [value]="i">{{choice}}
+    </ion-option>
+  </ion-select>
+</ion-item>
+<ion-list *ngIf="filters.tca.filter">
+  <ion-item *ngFor="let leFilter of filters.tca.filter;">
+    {{tcas[leFilter.data]}}
+    <ion-badge item-end>{{leFilter.nhits | number:'':'fr'}}</ion-badge>
+  </ion-item>
+</ion-list>
+
+
 <!--  REGION -->
 <ion-item>
   <ion-label color="primary" stacked>Région</ion-label>
-  <ion-input #tefetInput placeholder="Ajouter une région"
-             (keyup.enter)="addFilter('tefet', tefetInput.value); tefetInput.value = ''"></ion-input>
+  <ion-input #regionInput placeholder="Ajouter une région"
+             (keyup.enter)="addFilter('libreg_new', regionInput.value); regionInput.value = ''"></ion-input>
 </ion-item>
 
-<ion-list *ngIf="filters.tefet.filter">
-  <ion-item *ngFor="let leFilter of filters.tefet.filter; let i = index">
-    <button ion-button [round]="true" icon-start (click)="removeFilter('tefet', i)">
+<ion-list *ngIf="filters.libreg_new.filter">
+  <ion-item *ngFor="let leFilter of filters.libreg_new.filter; let i = index">
+    <button ion-button [round]="true" icon-start (click)="removeFilter('libreg_new', i)">
       <ion-icon name="close"></ion-icon>
     </button>
     {{leFilter.data}}

@@ -1,18 +1,18 @@
 import {Component} from '@angular/core';
 import {Transfer, TransferObject} from '@ionic-native/transfer';
 import {File} from '@ionic-native/file';
-import {AlertController, LoadingController, NavParams, Platform} from 'ionic-angular';
+import {AlertController, LoadingController, Platform} from 'ionic-angular';
 import {SendUrlService} from '../../providers/send-url';
 import {FirmApiProvider} from '../../providers/firm-api/firm-api';
 
 declare var cordova: any;
 
 @Component({
-  selector: 'page-contact',
-  templateUrl: 'contact.html',
+  selector: 'page-export',
+  templateUrl: 'export.html',
   providers: [Transfer, TransferObject, File]
 })
-export class ContactPage {
+export class ExportPage {
   storageDirectory: string = '';
   params = '';
   nhits: number;
@@ -44,9 +44,9 @@ export class ContactPage {
     const fileTransfert: TransferObject = this.transfert.create();
     const url = 'https://public.opendatasoft.com/explore/dataset/sirene/download/?format=' + ((format == 'json') ? format : format + '&use_labels_for_header=true') + ((allData) ? '' : '&q=' + this.params);
 
-    fileTransfert.download(url, this.storageDirectory + 'image-download-test.png').then((entry) => {
+    fileTransfert.download(url, this.storageDirectory + (allData ? 'all' : '') +'download.'+format).then((entry) => {
       const alertSuccess = this.alertCtrl.create({
-        title: `Download Succeeded!`,
+        title: `Fichier ${format} téléchargé.`,
         subTitle: `Le fichier .${format} à bien été téléchargé dans le path : ${entry.toURL()}`,
         buttons: ['Ok']
       });
