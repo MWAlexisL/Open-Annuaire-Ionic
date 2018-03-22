@@ -71,7 +71,7 @@ export class FilterComponent {
     });
 
     loading.present();
-
+    if (value.length !== 0) {
       for (let i = 0; i < value.length; i++) {
         if (this.checkIfFilterExists(filter, value[i]) === undefined) {
           const newFilter = new Filter();
@@ -79,7 +79,7 @@ export class FilterComponent {
           param = filter + ':' + value[i];
           this.firmApiService.searchCompanies(param, 0).subscribe(data => {
             newFilter.nhits = data.nhits;
-            if (i+1 === value.length) {
+            if (i + 1 === value.length) {
               loading.dismiss();
             }
           });
@@ -89,6 +89,10 @@ export class FilterComponent {
           this.sendUrlService.sendUrl(this.params);
         }
       }
+    } else {
+      this.removeFilter(filter);
+      loading.dismiss();
+    }
   }
 
   checkIfFilterExists(filter, value) {
